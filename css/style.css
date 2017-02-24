@@ -9,5 +9,6 @@ header {
 
 body {
 	background: url('../images/workdesk_background.jpg');
+	background: no-repeat;
 
 }
