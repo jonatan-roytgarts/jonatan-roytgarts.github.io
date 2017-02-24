@@ -8,6 +8,6 @@ header {
 }
 
 body {
-	background-image: url("file://C:/Users/Student/Desktop/personal-website/images/background.jpg");
-	
+	background-image: url("../images/background.jpg");
+
 }
