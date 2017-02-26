@@ -45,12 +45,13 @@ footer {
 	list-style: none;
 }
 
-.menu-button {
-	color: white;
-	width: 300px;
-	height: 50px;
-}
-
-.menu-button #a {
-	
+a:link, a:visited{
+	background-color: #ffff99;
+	opacity: 0.9;
+	border-radius: 100%;
+	color: #cc6600;
+	padding: 5px 35px;
+	text-decoration: none;
+	font-family: 'Pacifico', cursive;
+	font-size: 30px;
 }
