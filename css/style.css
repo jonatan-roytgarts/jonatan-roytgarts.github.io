@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Fascinate+Inline|Pacifico');
+
 html {
 	background: url('../images/pattern_background.jpg') no-repeat center center fixed;
 
@@ -9,35 +10,58 @@ html {
 
   background-size: cover;
 	overflow-x: hidden;
+
 }
 
 	body  {
 		width: 100%;
 		height: 100%;
-		/*border: 3px solid;*/
 		position: fixed;
 		margin: 2px auto;
 	}
 
-
 header {
 	font-family: 'Fascinate Inline', cursive;
 	font-size: 120%;
+	color: white;
 	text-align: center;
-	/* margin-left: 7px;
-	margin-right: 7px; */
+	background-color: brown;
+	height: 10%;
+	margin-left: 0.5%;
+	margin-right: 0.5%;
+	margin-top: -2%;
+	border-radius: 5px;
+
+
 }
 
 footer {
-	background-color: grey;
-	opacity: 0.3;
-	font-size: 230%;
+	background-color: black;
+	font-family: 'Pacifico', cursive;
+	font-size: 100%;
+	color: white;
 	text-align: center;
 	position: absolute;
-	margin-bottom: 5px;
+	border-radius: 5px;
+	margin-left: 0.5%;
+	margin-right: 0.5%;
+	margin-bottom: 0.5%;
 	right: 0;
 	bottom: 0;
 	left: 0;
+}
+
+p {
+	background-color: white;
+	font-family: 'Pacifico', cursive;
+	font-size: 150%;
+	text-align: left;
+	color: black;
+	margin-top: 0.5%;
+	margin-left: 0.5%;
+	margin-right: 0.5%;
+	padding: 1%;
+	border-radius: 5px;
 }
 
 ul.menu-bar {
@@ -45,6 +69,13 @@ ul.menu-bar {
 	justify-content: space-around;
 	padding-right: 7%;
 	list-style: none;
+}
+
+.menu-bar li{
+	padding: 20px;
+	width: 33%;
+	display: flex;
+	justify-content: center;
 }
 
 a:link, a:visited{
@@ -56,10 +87,11 @@ a:link, a:visited{
 	text-decoration: none;
 	font-family: 'Pacifico', cursive;
 	font-size: 30px;
+	border: 2px solid orange;
 }
 
 a:hover {
-	background-color: red;
+	background-color: brown;
 	opacity: 0.9;
 	border-radius: 100%;
 	color: white;
@@ -68,8 +100,3 @@ a:hover {
 	font-family: 'Pacifico', cursive;
 	font-size: 30px;
 }
-
-.hover_github_logo { width: 120%;}
-.hover_github_logo a { position:relative; }
-.hover_github_logo a span{ position: absolute; display: none; z-index: 100; margin-left: -4%;}
-.hover_github_logo a:hover span {display: block;}
