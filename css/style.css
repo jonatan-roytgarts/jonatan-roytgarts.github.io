@@ -72,4 +72,4 @@ a:hover {
 .hover_github_logo { width: 120%;}
 .hover_github_logo a { position:relative; }
 .hover_github_logo a span{ position: absolute; display: block; z-index: 100; margin-left: -4%;}
-/*.hover_github_logo a:hover span {display: block;} */
+.hover_github_logo a:hover span {display: block;} 
