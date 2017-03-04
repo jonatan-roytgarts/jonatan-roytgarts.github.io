@@ -48,7 +48,9 @@ footer {
 	left: 0;
 }
 
-p {
+footer img { width=15px; height=15px; }
+
+.par_container p {
 	background-color: white;
 	font-family: 'Pacifico', cursive;
 	font-size: 150%;
@@ -74,7 +76,7 @@ ul.menu-bar {
 	justify-content: center;
 }
 
-a:link, a:visited{
+.menu-bar a:link, a:visited{
 	background-color: lightblue;
 	color: darkblue;
 	padding: 5px 35px;
@@ -85,7 +87,7 @@ a:link, a:visited{
 	border-radius: 5px;
 }
 
-a:hover {
+.menu-bar a:hover {
 	background-color: darkblue;
 	color: white;
 	padding: 5px 35px;
@@ -125,21 +127,37 @@ a:hover {
 	box-shadow: 0px 0px 2px 1px black;
 }
 
-.to-the-right {
-	float: right;
-}
+.to-the-right { float: right; }
 
-.image_container {
-	display: flex;
-	justify-content: center;
-}
-.me {
-	border-radius: 10px;
-	box-shadow: 0px 0px 20px 1px black;
-}
+.image_container { display: flex; justify-content: center; }
+
+.me { border-radius: 10px; box-shadow: 0px 0px 20px 1px black; }
 
 .par_container {
 	background-color: white;
 	margin-top: 2%;
-	padding: 5px;
+	padding: 1%;
 }
+
+.portfolio_wrapper {
+	margin-top: 2%;
+	display: flex;
+	justify-content: space-around;
+}
+
+.project_desc_box {
+	background-color: white;
+	display: inline-block;
+	width: 20%;
+	padding: 1%;
+	border-radius: 1%;
+	box-shadow: 3px 3px 10px 0px black;
+}
+
+.project_desc_box p { font-size: 100%; font-family: sans-serif; }
+.project_desc_box a { color: darkblue; float: right; }
+.project_desc_box h4 { margin-bottom: 0; }
+.project_desc_box hr { margin-top : 0; }
+
+.github-logo-container { display: flex; justify-content: center; }
+.github-logo {}
