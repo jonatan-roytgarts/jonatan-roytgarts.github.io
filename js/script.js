@@ -1,4 +1,4 @@
-function appear(elm, i, step, speed){
+function appear(elm, i, step, speed){ /* credit to Mic http://stackoverflow.com/users/166491/mic from stackoverflow */
     var t_o;
     //initial opacity
     i = i || 0;
@@ -22,4 +22,25 @@ function appear(elm, i, step, speed){
         //older IE
         elm.style.filter = 'alpha(opacity=' + opacity*100 + ')';
     }, speed);
+}
+
+function dominoAppear(img1, img2, img3, img4, img5, img6, speed) {
+  alert("function call");
+  var t_o;
+  var i = 0;
+  var images = { img1, img2, img3, img4, img5, img6 };
+
+  t_o = setInterval(function(){
+
+    var elm = images[i];
+    i = i + 1;
+
+    if(i > 5) {
+      clearInterval(t_o);
+      return;
+    }
+
+    alert(i);
+    elm.style.display = 'inline-block';
+  }, speed);
 }
