@@ -67,6 +67,12 @@ footer {
 	left: 0;
 }
 
+footer a {
+	background-color: black;
+	font-family: 'Pacifico', cursive;
+	font-size: 110%;
+	color: white;
+}
 ul.menu-bar {
 	margin-top: 0;
 	display: flex;
