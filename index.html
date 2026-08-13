@@ -1,2083 +1,1740 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Jonatan Roytgarts | Cybersecurity & Systems</title>
+    <title>Jonatan Roytgarts | Cybersecurity & Systems</title>
 
-  <meta
-    name="description"
-    content="Jonatan Roytgarts — cybersecurity analyst, builder, and systems thinker. Exploring security investigation, telemetry correlation, automation, and explainable incident reconstruction."
-  />
+    <meta name="description"
+        content="Jonatan Roytgarts — cybersecurity analyst, builder, and systems thinker. Exploring security investigation, telemetry correlation, automation, and explainable incident reconstruction." />
 
-  <style>
-    /* ============================================================
+    <style>
+        /* ============================================================
        DESIGN TOKENS
        ============================================================ */
 
-    :root {
-      --bg: #060a12;
-      --bg-soft: #0a101c;
-      --panel: rgba(12, 21, 36, 0.72);
-      --panel-solid: #0c1524;
+        :root {
+            --bg: #060a12;
+            --bg-soft: #0a101c;
+            --panel: rgba(12, 21, 36, 0.72);
+            --panel-solid: #0c1524;
 
-      --text: #eef7ff;
-      --text-soft: #a9b9c9;
-      --text-muted: #708296;
+            --text: #eef7ff;
+            --text-soft: #a9b9c9;
+            --text-muted: #708296;
 
-      --cyan: #67e8f9;
-      --cyan-bright: #c5f7ff;
-      --blue: #5b8cff;
-      --violet: #987dff;
-      --amber: #f8c77e;
+            --cyan: #67e8f9;
+            --cyan-bright: #c5f7ff;
+            --blue: #5b8cff;
+            --violet: #987dff;
+            --amber: #f8c77e;
 
-      --line: rgba(129, 225, 255, 0.16);
-      --line-strong: rgba(129, 225, 255, 0.34);
+            --line: rgba(129, 225, 255, 0.16);
+            --line-strong: rgba(129, 225, 255, 0.34);
 
-      --max-width: 1180px;
-      --radius: 22px;
+            --max-width: 1180px;
+            --radius: 22px;
 
-      --shadow:
-        0 20px 60px rgba(0, 0, 0, 0.32),
-        0 0 80px rgba(65, 173, 255, 0.04);
-    }
+            --shadow:
+                0 20px 60px rgba(0, 0, 0, 0.32), 0 0 80px rgba(65, 173, 255, 0.04);
+        }
 
-    /* ============================================================
+        /* ============================================================
        RESET
        ============================================================ */
 
-    * {
-      box-sizing: border-box;
-    }
+        * {
+            box-sizing: border-box;
+        }
 
-    html {
-      scroll-behavior: smooth;
-    }
+        html {
+            scroll-behavior: smooth;
+        }
 
-    body {
-      margin: 0;
-      background:
-        radial-gradient(
-          circle at 72% 14%,
-          rgba(49, 100, 165, 0.14),
-          transparent 26rem
-        ),
-        radial-gradient(
-          circle at 20% 65%,
-          rgba(74, 62, 150, 0.09),
-          transparent 34rem
-        ),
-        var(--bg);
+        body {
+            margin: 0;
+            background:
+                radial-gradient(circle at 72% 14%,
+                    rgba(49, 100, 165, 0.14),
+                    transparent 26rem),
+                radial-gradient(circle at 20% 65%,
+                    rgba(74, 62, 150, 0.09),
+                    transparent 34rem),
+                var(--bg);
 
-      color: var(--text);
+            color: var(--text);
 
-      font-family:
-        Inter,
-        ui-sans-serif,
-        system-ui,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        sans-serif;
+            font-family:
+                Inter,
+                ui-sans-serif,
+                system-ui,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
 
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
 
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      z-index: -10;
-      pointer-events: none;
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -10;
+            pointer-events: none;
 
-      background-image:
-        linear-gradient(
-          rgba(103, 232, 249, 0.018) 1px,
-          transparent 1px
-        ),
-        linear-gradient(
-          90deg,
-          rgba(103, 232, 249, 0.018) 1px,
-          transparent 1px
-        );
+            background-image:
+                linear-gradient(rgba(103, 232, 249, 0.018) 1px, transparent 1px),
+                linear-gradient(90deg,
+                    rgba(103, 232, 249, 0.018) 1px,
+                    transparent 1px);
 
-      background-size: 64px 64px;
-      mask-image:
-        linear-gradient(
-          to bottom,
-          rgba(0, 0, 0, 0.9),
-          transparent 75%
-        );
-    }
+            background-size: 64px 64px;
+            mask-image: linear-gradient(to bottom,
+                    rgba(0, 0, 0, 0.9),
+                    transparent 75%);
+        }
 
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
 
-    button,
-    a {
-      -webkit-tap-highlight-color: transparent;
-    }
+        button,
+        a {
+            -webkit-tap-highlight-color: transparent;
+        }
 
-    img,
-    svg {
-      display: block;
-      max-width: 100%;
-    }
+        img,
+        svg {
+            display: block;
+            max-width: 100%;
+        }
 
-    ::selection {
-      color: #00111c;
-      background: var(--cyan);
-    }
+        ::selection {
+            color: #00111c;
+            background: var(--cyan);
+        }
 
-    /* ============================================================
+        /* ============================================================
        GLOBAL LAYOUT
        ============================================================ */
 
-    .container {
-      width: min(calc(100% - 40px), var(--max-width));
-      margin-inline: auto;
-    }
+        .container {
+            width: min(calc(100% - 40px), var(--max-width));
+            margin-inline: auto;
+        }
 
-    .section {
-      position: relative;
-      padding: 120px 0;
-    }
+        .section {
+            position: relative;
+            padding: 120px 0;
+        }
 
-    .section-label {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
+        .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
 
-      margin-bottom: 22px;
+            margin-bottom: 22px;
 
-      color: var(--cyan);
-      font-size: 0.76rem;
-      font-weight: 700;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-    }
+            color: var(--cyan);
+            font-size: 0.76rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+        }
 
-    .section-label::before {
-      content: "";
-      width: 28px;
-      height: 1px;
-      background: var(--cyan);
-      box-shadow: 0 0 12px var(--cyan);
-    }
+        .section-label::before {
+            content: "";
+            width: 28px;
+            height: 1px;
+            background: var(--cyan);
+            box-shadow: 0 0 12px var(--cyan);
+        }
 
-    .section-heading {
-      max-width: 760px;
-      margin: 0 0 26px;
+        .section-heading {
+            max-width: 760px;
+            margin: 0 0 26px;
 
-      font-size: clamp(2.2rem, 5vw, 4.6rem);
-      line-height: 1.02;
-      letter-spacing: -0.045em;
-    }
+            font-size: clamp(2.2rem, 5vw, 4.6rem);
+            line-height: 1.02;
+            letter-spacing: -0.045em;
+        }
 
-    .section-copy {
-      max-width: 730px;
-      margin: 0;
+        .section-copy {
+            max-width: 730px;
+            margin: 0;
 
-      color: var(--text-soft);
-      font-size: clamp(1rem, 1.4vw, 1.15rem);
-    }
+            color: var(--text-soft);
+            font-size: clamp(1rem, 1.4vw, 1.15rem);
+        }
 
-    /* ============================================================
+        /* ============================================================
        NAVIGATION
        ============================================================ */
 
-    .nav-wrap {
-      position: fixed;
-      inset: 18px 0 auto;
-      z-index: 100;
-      pointer-events: none;
-    }
+        .nav-wrap {
+            position: fixed;
+            inset: 18px 0 auto;
+            z-index: 100;
+            pointer-events: none;
+        }
 
-    .nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+        .nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
 
-      width: min(calc(100% - 32px), 1100px);
-      margin-inline: auto;
-      padding: 10px 12px 10px 18px;
+            width: min(calc(100% - 32px), 1100px);
+            margin-inline: auto;
+            padding: 10px 12px 10px 18px;
 
-      border: 1px solid rgba(172, 225, 255, 0.12);
-      border-radius: 999px;
+            border: 1px solid rgba(172, 225, 255, 0.12);
+            border-radius: 999px;
 
-      background: rgba(5, 10, 18, 0.64);
-      backdrop-filter: blur(18px);
+            background: rgba(5, 10, 18, 0.64);
+            backdrop-filter: blur(18px);
 
-      box-shadow:
-        0 8px 30px rgba(0, 0, 0, 0.22),
-        inset 0 1px rgba(255, 255, 255, 0.025);
+            box-shadow:
+                0 8px 30px rgba(0, 0, 0, 0.22),
+                inset 0 1px rgba(255, 255, 255, 0.025);
 
-      pointer-events: auto;
-    }
+            pointer-events: auto;
+        }
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 11px;
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 11px;
 
-      font-size: 0.9rem;
-      font-weight: 700;
-      letter-spacing: 0.02em;
-    }
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
 
-    .brand-mark {
-      position: relative;
-      width: 24px;
-      height: 24px;
-    }
+        .brand-mark {
+            position: relative;
+            width: 24px;
+            height: 24px;
+        }
 
-    .brand-mark::before,
-    .brand-mark::after {
-      content: "";
-      position: absolute;
-      inset: 4px;
-      border: 1px solid var(--cyan);
-      transform: rotate(45deg);
-    }
+        .brand-mark::before,
+        .brand-mark::after {
+            content: "";
+            position: absolute;
+            inset: 4px;
+            border: 1px solid var(--cyan);
+            transform: rotate(45deg);
+        }
 
-    .brand-mark::after {
-      inset: 8px;
-      border-color: var(--violet);
-      box-shadow: 0 0 13px rgba(152, 125, 255, 0.7);
-    }
+        .brand-mark::after {
+            inset: 8px;
+            border-color: var(--violet);
+            box-shadow: 0 0 13px rgba(152, 125, 255, 0.7);
+        }
 
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
 
-    .nav-links a {
-      padding: 8px 13px;
-      border-radius: 999px;
+        .nav-links a {
+            padding: 8px 13px;
+            border-radius: 999px;
 
-      color: var(--text-soft);
-      font-size: 0.82rem;
-      transition:
-        background 180ms ease,
-        color 180ms ease;
-    }
+            color: var(--text-soft);
+            font-size: 0.82rem;
+            transition:
+                background 180ms ease,
+                color 180ms ease;
+        }
 
-    .nav-links a:hover {
-      color: var(--text);
-      background: rgba(255, 255, 255, 0.055);
-    }
+        .nav-links a:hover {
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.055);
+        }
 
-    /* ============================================================
+        /* ============================================================
        HERO
        ============================================================ */
 
-    .hero {
-      position: relative;
-      display: flex;
-      align-items: center;
+        .hero {
+            position: relative;
+            display: flex;
+            align-items: center;
 
-      min-height: 100svh;
-      padding-top: 110px;
-      isolation: isolate;
-      overflow: hidden;
-    }
+            min-height: 100svh;
+            padding-top: 110px;
+            isolation: isolate;
+            overflow: hidden;
+        }
 
-    .hero::after {
-      content: "";
-      position: absolute;
-      inset: auto 0 0;
-      z-index: -1;
-      height: 38%;
+        .hero::after {
+            content: "";
+            position: absolute;
+            inset: auto 0 0;
+            z-index: -1;
+            height: 38%;
 
-      background:
-        linear-gradient(
-          to bottom,
-          transparent,
-          rgba(6, 10, 18, 0.84) 72%,
-          var(--bg)
-        );
-    }
+            background: linear-gradient(to bottom,
+                    transparent,
+                    rgba(6, 10, 18, 0.84) 72%,
+                    var(--bg));
+        }
 
-    .hero-content {
-      position: relative;
-      z-index: 20;
+        .hero-content {
+            position: relative;
+            z-index: 20;
 
-      width: min(720px, 70%);
-      padding-bottom: 90px;
-    }
+            width: min(720px, 70%);
+            padding-bottom: 90px;
+        }
 
-    .eyebrow {
-      display: flex;
-      align-items: center;
-      gap: 12px;
+        .eyebrow {
+            display: flex;
+            align-items: center;
+            gap: 12px;
 
-      margin-bottom: 22px;
+            margin-bottom: 22px;
 
-      color: var(--cyan);
-      font-size: 0.76rem;
-      font-weight: 700;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-    }
+            color: var(--cyan);
+            font-size: 0.76rem;
+            font-weight: 700;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+        }
 
-    .eyebrow-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
+        .eyebrow-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
 
-      background: var(--cyan);
-      box-shadow:
-        0 0 10px var(--cyan),
-        0 0 28px rgba(103, 232, 249, 0.65);
-    }
+            background: var(--cyan);
+            box-shadow:
+                0 0 10px var(--cyan),
+                0 0 28px rgba(103, 232, 249, 0.65);
+        }
 
-    h1 {
-      margin: 0;
+        h1 {
+            margin: 0;
 
-      font-size: clamp(4.1rem, 10vw, 9.4rem);
-      line-height: 0.82;
-      letter-spacing: -0.075em;
-    }
+            font-size: clamp(4.1rem, 10vw, 9.4rem);
+            line-height: 0.82;
+            letter-spacing: -0.075em;
+        }
 
-    .hero-title-line {
-      display: block;
-    }
+        .hero-title-line {
+            display: block;
+        }
 
-    .hero-title-line:last-child {
-      color: transparent;
-      -webkit-text-stroke: 1px rgba(225, 245, 255, 0.7);
-    }
+        .hero-title-line:last-child {
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(225, 245, 255, 0.7);
+        }
 
-    .hero-role {
-      margin: 34px 0 18px;
+        .hero-role {
+            margin: 34px 0 18px;
 
-      color: var(--text);
-      font-size: clamp(1.05rem, 1.7vw, 1.4rem);
-      font-weight: 500;
-    }
+            color: var(--text);
+            font-size: clamp(1.05rem, 1.7vw, 1.4rem);
+            font-weight: 500;
+        }
 
-    .hero-description {
-      max-width: 620px;
-      margin: 0;
+        .hero-description {
+            max-width: 620px;
+            margin: 0;
 
-      color: var(--text-soft);
-      font-size: clamp(1rem, 1.5vw, 1.17rem);
-    }
+            color: var(--text-soft);
+            font-size: clamp(1rem, 1.5vw, 1.17rem);
+        }
 
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
 
-      margin-top: 34px;
-    }
+            margin-top: 34px;
+        }
 
-    .button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
 
-      min-height: 46px;
-      padding: 0 20px;
+            min-height: 46px;
+            padding: 0 20px;
 
-      border: 1px solid var(--line-strong);
-      border-radius: 999px;
+            border: 1px solid var(--line-strong);
+            border-radius: 999px;
 
-      color: var(--text);
-      background: rgba(10, 22, 35, 0.5);
+            color: var(--text);
+            background: rgba(10, 22, 35, 0.5);
 
-      font-size: 0.88rem;
-      font-weight: 650;
+            font-size: 0.88rem;
+            font-weight: 650;
 
-      transition:
-        transform 180ms ease,
-        background 180ms ease,
-        border-color 180ms ease,
-        box-shadow 180ms ease;
-    }
+            transition:
+                transform 180ms ease,
+                background 180ms ease,
+                border-color 180ms ease,
+                box-shadow 180ms ease;
+        }
 
-    .button:hover {
-      transform: translateY(-2px);
-      border-color: rgba(103, 232, 249, 0.62);
+        .button:hover {
+            transform: translateY(-2px);
+            border-color: rgba(103, 232, 249, 0.62);
 
-      background: rgba(16, 38, 56, 0.72);
-      box-shadow: 0 8px 28px rgba(53, 197, 255, 0.11);
-    }
+            background: rgba(16, 38, 56, 0.72);
+            box-shadow: 0 8px 28px rgba(53, 197, 255, 0.11);
+        }
 
-    .button-primary {
-      color: #03101a;
-      border-color: transparent;
+        .button-primary {
+            color: #03101a;
+            border-color: transparent;
 
-      background:
-        linear-gradient(
-          135deg,
-          var(--cyan-bright),
-          var(--cyan)
-        );
-    }
+            background: linear-gradient(135deg, var(--cyan-bright), var(--cyan));
+        }
 
-    .button-primary:hover {
-      color: #03101a;
-      border-color: transparent;
-      background:
-        linear-gradient(
-          135deg,
-          #e8fbff,
-          #81e8fa
-        );
-    }
+        .button-primary:hover {
+            color: #03101a;
+            border-color: transparent;
+            background: linear-gradient(135deg, #e8fbff, #81e8fa);
+        }
 
-    .button-arrow {
-      transition: transform 180ms ease;
-    }
+        .button-arrow {
+            transition: transform 180ms ease;
+        }
 
-    .button:hover .button-arrow {
-      transform: translateX(3px);
-    }
+        .button:hover .button-arrow {
+            transform: translateX(3px);
+        }
 
-    /* ============================================================
+        /* ============================================================
        HERO ART
        ============================================================ */
 
-    .hero-art {
-      position: absolute;
-      inset: 0;
-      z-index: 1;
+        .window-light {
+            fill: #77e7f7;
+            opacity: 0.18;
+        }
 
-      pointer-events: none;
-      overflow: hidden;
-    }
+        .window-light.dim {
+            opacity: 0.1;
+        }
 
-    .hero-sky {
-      position: absolute;
-      inset: 0;
+        .telemetry-ping {
+            fill: #67e8f9;
+            opacity: 0.75;
+            filter: drop-shadow(0 0 6px rgba(103, 232, 249, 0.75));
+            animation: pingPulse 3.5s ease-in-out infinite;
+        }
 
-      background:
-        radial-gradient(
-          circle at 78% 25%,
-          rgba(87, 151, 215, 0.24),
-          transparent 22%
-        ),
-        radial-gradient(
-          circle at 67% 16%,
-          rgba(152, 125, 255, 0.11),
-          transparent 18%
-        ),
-        linear-gradient(
-          160deg,
-          #07111f 0%,
-          #07101b 38%,
-          #0a1320 64%,
-          #05080e 100%
-        );
-    }
+        .telemetry-ping.alt {
+            animation-delay: -1.7s;
+        }
 
-    .moon-glow {
-      position: absolute;
-      top: 13%;
-      right: 14%;
+        .telemetry-thread {
+            fill: none;
+            stroke: rgba(103, 232, 249, 0.18);
+            stroke-width: 1.15;
+            stroke-dasharray: 2 7;
+            animation: telemetryFlow 14s linear infinite;
+        }
 
-      width: min(28vw, 350px);
-      aspect-ratio: 1;
-      border-radius: 50%;
+        .telemetry-thread.alt {
+            stroke: rgba(152, 125, 255, 0.14);
+            animation-duration: 21s;
+            animation-direction: reverse;
+        }
 
-      background:
-        radial-gradient(
-          circle,
-          rgba(166, 229, 255, 0.16),
-          rgba(99, 156, 214, 0.04) 38%,
-          transparent 69%
-        );
+        @keyframes pingPulse {
 
-      filter: blur(3px);
-    }
+            0%,
+            100% {
+                opacity: 0.25;
+                r: 2.5;
+            }
 
-    .city-layer {
-      position: absolute;
-      left: 0;
-      bottom: 3%;
-      width: 100%;
-      min-width: 900px;
-      opacity: 0.72;
-    }
+            50% {
+                opacity: 0.95;
+                r: 4;
+            }
+        }
 
-    .city-back {
-      bottom: 8%;
-      opacity: 0.27;
-      filter: blur(1px);
-      transform: scale(1.03);
-    }
+        @keyframes telemetryFlow {
+            to {
+                stroke-dashoffset: -120;
+            }
+        }
 
-    .city-front {
-      opacity: 0.72;
-    }
+        .hero-art {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
 
-    .guardian {
-      position: absolute;
-      right: 8%;
-      bottom: 5%;
+            pointer-events: none;
+            overflow: hidden;
+        }
 
-      width: min(23vw, 295px);
-      min-width: 180px;
+        .hero-sky {
+            position: absolute;
+            inset: 0;
 
-      filter:
-        drop-shadow(0 18px 28px rgba(0, 0, 0, 0.6))
-        drop-shadow(0 0 22px rgba(70, 186, 255, 0.05));
-    }
+            background:
+                radial-gradient(circle at 78% 25%,
+                    rgba(87, 151, 215, 0.24),
+                    transparent 22%),
+                radial-gradient(circle at 67% 16%,
+                    rgba(152, 125, 255, 0.11),
+                    transparent 18%),
+                linear-gradient(160deg,
+                    #07111f 0%,
+                    #07101b 38%,
+                    #0a1320 64%,
+                    #05080e 100%);
+        }
 
-    .guardian-light {
-      animation: guardianPulse 4s ease-in-out infinite;
-    }
+        .moon-glow {
+            position: absolute;
+            top: 13%;
+            right: 14%;
 
-    @keyframes guardianPulse {
-      0%,
-      100% {
-        opacity: 0.45;
-      }
+            width: min(28vw, 350px);
+            aspect-ratio: 1;
+            border-radius: 50%;
 
-      50% {
-        opacity: 1;
-      }
-    }
+            background: radial-gradient(circle,
+                    rgba(166, 229, 255, 0.16),
+                    rgba(99, 156, 214, 0.04) 38%,
+                    transparent 69%);
 
-    .data-network {
-      position: absolute;
-      inset: 0;
-      opacity: 0.55;
-    }
+            filter: blur(3px);
+        }
 
-    .network-path {
-      fill: none;
-      stroke: url(#threadGradient);
-      stroke-width: 1;
-      stroke-dasharray: 3 7;
+        .city-layer {
+            position: absolute;
+            left: 0;
+            bottom: 2%;
+            width: 100%;
+            min-width: 1000px;
+            opacity: 0.9;
+        }
 
-      animation: networkFlow 15s linear infinite;
-    }
+        .city-back {
+            bottom: 9%;
+            opacity: 0.24;
+            filter: blur(1.6px);
+            transform: scale(1.02);
+        }
 
-    .network-path.secondary {
-      opacity: 0.5;
-      animation-duration: 23s;
-      animation-direction: reverse;
-    }
+        .city-front {
+            opacity: 0.82;
+        }
 
-    @keyframes networkFlow {
-      to {
-        stroke-dashoffset: -200;
-      }
-    }
+        .guardian {
+            position: absolute;
+            right: 7%;
+            bottom: 3%;
 
-    .node {
-      fill: var(--cyan);
-      filter: drop-shadow(0 0 6px rgba(103, 232, 249, 0.9));
+            width: min(18vw, 240px);
+            min-width: 150px;
 
-      animation: nodePulse 4s ease-in-out infinite;
-    }
+            filter: drop-shadow(0 18px 28px rgba(0, 0, 0, 0.62)) drop-shadow(0 0 18px rgba(70, 186, 255, 0.06));
+        }
 
-    .node:nth-of-type(2n) {
-      animation-delay: -1.4s;
-    }
+        .guardian-light {
+            animation: guardianPulse 4s ease-in-out infinite;
+        }
 
-    .node:nth-of-type(3n) {
-      animation-delay: -2.8s;
-    }
+        @keyframes guardianPulse {
 
-    @keyframes nodePulse {
-      0%,
-      100% {
-        opacity: 0.35;
-        transform: scale(0.85);
-      }
+            0%,
+            100% {
+                opacity: 0.45;
+            }
 
-      50% {
-        opacity: 1;
-        transform: scale(1.2);
-      }
-    }
+            50% {
+                opacity: 1;
+            }
+        }
 
-    .horizon-glow {
-      position: absolute;
-      right: 0;
-      bottom: 18%;
-      left: 25%;
+        .data-network {
+            position: absolute;
+            inset: 0;
+            opacity: 0.55;
+        }
 
-      height: 1px;
+        .network-path {
+            fill: none;
+            stroke: url(#threadGradient);
+            stroke-width: 1;
+            stroke-dasharray: 3 7;
 
-      background:
-        linear-gradient(
-          90deg,
-          transparent,
-          rgba(76, 193, 255, 0.18),
-          rgba(139, 123, 255, 0.2),
-          transparent
-        );
+            animation: networkFlow 15s linear infinite;
+        }
 
-      box-shadow:
-        0 0 40px rgba(65, 188, 255, 0.2);
-    }
+        .network-path.secondary {
+            opacity: 0.5;
+            animation-duration: 23s;
+            animation-direction: reverse;
+        }
 
-    .scroll-indicator {
-      position: absolute;
-      right: 4%;
-      bottom: 8%;
-      z-index: 30;
+        @keyframes networkFlow {
+            to {
+                stroke-dashoffset: -200;
+            }
+        }
 
-      display: flex;
-      align-items: center;
-      gap: 12px;
+        .node {
+            fill: var(--cyan);
+            filter: drop-shadow(0 0 6px rgba(103, 232, 249, 0.9));
 
-      color: var(--text-muted);
-      font-size: 0.72rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
+            animation: nodePulse 4s ease-in-out infinite;
+        }
 
-      transform: rotate(90deg);
-      transform-origin: right bottom;
-    }
+        .node:nth-of-type(2n) {
+            animation-delay: -1.4s;
+        }
 
-    .scroll-line {
-      width: 46px;
-      height: 1px;
+        .node:nth-of-type(3n) {
+            animation-delay: -2.8s;
+        }
 
-      background:
-        linear-gradient(
-          90deg,
-          var(--cyan),
-          transparent
-        );
-    }
+        @keyframes nodePulse {
 
-    /* ============================================================
+            0%,
+            100% {
+                opacity: 0.35;
+                transform: scale(0.85);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+        }
+
+        .horizon-glow {
+            position: absolute;
+            right: 0;
+            bottom: 18%;
+            left: 25%;
+
+            height: 1px;
+
+            background: linear-gradient(90deg,
+                    transparent,
+                    rgba(76, 193, 255, 0.18),
+                    rgba(139, 123, 255, 0.2),
+                    transparent);
+
+            box-shadow: 0 0 40px rgba(65, 188, 255, 0.2);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            right: 4%;
+            bottom: 8%;
+            z-index: 30;
+
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            color: var(--text-muted);
+            font-size: 0.72rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+
+            transform: rotate(90deg);
+            transform-origin: right bottom;
+        }
+
+        .scroll-line {
+            width: 46px;
+            height: 1px;
+
+            background: linear-gradient(90deg, var(--cyan), transparent);
+        }
+
+        /* ============================================================
        ABOUT
        ============================================================ */
 
-    .about-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(320px, 0.65fr);
-      gap: 70px;
-      align-items: start;
-    }
+        .about-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(320px, 0.65fr);
+            gap: 70px;
+            align-items: start;
+        }
 
-    .principles {
-      display: grid;
-      gap: 1px;
+        .principles {
+            display: grid;
+            gap: 1px;
 
-      overflow: hidden;
+            overflow: hidden;
 
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
 
-      background: var(--line);
-      box-shadow: var(--shadow);
-    }
+            background: var(--line);
+            box-shadow: var(--shadow);
+        }
 
-    .principle {
-      position: relative;
-      padding: 24px 26px;
+        .principle {
+            position: relative;
+            padding: 24px 26px;
 
-      background: rgba(7, 14, 24, 0.92);
-    }
+            background: rgba(7, 14, 24, 0.92);
+        }
 
-    .principle-number {
-      margin-bottom: 16px;
+        .principle-number {
+            margin-bottom: 16px;
 
-      color: var(--cyan);
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 0.18em;
-    }
+            color: var(--cyan);
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+        }
 
-    .principle h3 {
-      margin: 0 0 8px;
-      font-size: 1rem;
-    }
+        .principle h3 {
+            margin: 0 0 8px;
+            font-size: 1rem;
+        }
 
-    .principle p {
-      margin: 0;
-      color: var(--text-muted);
-      font-size: 0.9rem;
-    }
+        .principle p {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
 
-    /* ============================================================
+        /* ============================================================
        INCIDENT LOOM
        ============================================================ */
 
-    .project-section {
-      overflow: hidden;
-    }
+        .project-section {
+            overflow: hidden;
+        }
 
-    .project-section::before {
-      content: "";
-      position: absolute;
-      top: 20%;
-      left: 50%;
+        .project-section::before {
+            content: "";
+            position: absolute;
+            top: 20%;
+            left: 50%;
 
-      width: 70vw;
-      height: 70vw;
+            width: 70vw;
+            height: 70vw;
 
-      background:
-        radial-gradient(
-          circle,
-          rgba(82, 118, 255, 0.08),
-          transparent 61%
-        );
+            background: radial-gradient(circle,
+                    rgba(82, 118, 255, 0.08),
+                    transparent 61%);
 
-      transform: translateX(-50%);
-      pointer-events: none;
-    }
+            transform: translateX(-50%);
+            pointer-events: none;
+        }
 
-    .project-card {
-      position: relative;
+        .project-card {
+            position: relative;
 
-      display: grid;
-      grid-template-columns: 0.85fr 1.15fr;
-      gap: 0;
+            display: grid;
+            grid-template-columns: 0.85fr 1.15fr;
+            gap: 0;
 
-      margin-top: 60px;
-      overflow: hidden;
+            margin-top: 60px;
+            overflow: hidden;
 
-      border: 1px solid rgba(151, 218, 255, 0.17);
-      border-radius: 28px;
+            border: 1px solid rgba(151, 218, 255, 0.17);
+            border-radius: 28px;
 
-      background:
-        linear-gradient(
-          135deg,
-          rgba(13, 25, 42, 0.95),
-          rgba(6, 12, 22, 0.9)
-        );
+            background: linear-gradient(135deg,
+                    rgba(13, 25, 42, 0.95),
+                    rgba(6, 12, 22, 0.9));
 
-      box-shadow: var(--shadow);
-    }
+            box-shadow: var(--shadow);
+        }
 
-    .project-copy {
-      position: relative;
-      z-index: 3;
-      padding: clamp(34px, 6vw, 72px);
-    }
+        .project-copy {
+            position: relative;
+            z-index: 3;
+            padding: clamp(34px, 6vw, 72px);
+        }
 
-    .project-kicker {
-      margin-bottom: 15px;
+        .project-kicker {
+            margin-bottom: 15px;
 
-      color: var(--cyan);
-      font-size: 0.72rem;
-      font-weight: 750;
-      letter-spacing: 0.19em;
-      text-transform: uppercase;
-    }
+            color: var(--cyan);
+            font-size: 0.72rem;
+            font-weight: 750;
+            letter-spacing: 0.19em;
+            text-transform: uppercase;
+        }
 
-    .project-name {
-      margin: 0 0 22px;
+        .project-name {
+            margin: 0 0 22px;
 
-      font-size: clamp(2.6rem, 6vw, 5.3rem);
-      line-height: 0.95;
-      letter-spacing: -0.05em;
-    }
+            font-size: clamp(2.6rem, 6vw, 5.3rem);
+            line-height: 0.95;
+            letter-spacing: -0.05em;
+        }
 
-    .project-description {
-      margin: 0;
+        .project-description {
+            margin: 0;
 
-      color: var(--text-soft);
-      font-size: 1.04rem;
-    }
+            color: var(--text-soft);
+            font-size: 1.04rem;
+        }
 
-    .project-points {
-      display: grid;
-      gap: 12px;
+        .project-points {
+            display: grid;
+            gap: 12px;
 
-      margin: 30px 0 0;
-      padding: 0;
+            margin: 30px 0 0;
+            padding: 0;
 
-      list-style: none;
-    }
+            list-style: none;
+        }
 
-    .project-points li {
-      display: flex;
-      gap: 12px;
-      align-items: flex-start;
+        .project-points li {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
 
-      color: var(--text-muted);
-      font-size: 0.9rem;
-    }
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
 
-    .project-points li::before {
-      content: "";
+        .project-points li::before {
+            content: "";
 
-      flex: 0 0 auto;
+            flex: 0 0 auto;
 
-      width: 5px;
-      height: 5px;
-      margin-top: 9px;
+            width: 5px;
+            height: 5px;
+            margin-top: 9px;
 
-      border-radius: 50%;
+            border-radius: 50%;
 
-      background: var(--cyan);
-      box-shadow: 0 0 9px rgba(103, 232, 249, 0.7);
-    }
+            background: var(--cyan);
+            box-shadow: 0 0 9px rgba(103, 232, 249, 0.7);
+        }
 
-    .project-action {
-      margin-top: 32px;
-    }
+        .project-action {
+            margin-top: 32px;
+        }
 
-    /* ============================================================
+        /* ============================================================
        INCIDENT LOOM VISUAL
        ============================================================ */
 
-    .loom-visual {
-      position: relative;
+        .loom-visual {
+            position: relative;
 
-      display: flex;
-      align-items: center;
-      justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
-      min-height: 580px;
-      overflow: hidden;
+            min-height: 580px;
+            overflow: hidden;
 
-      border-left: 1px solid var(--line);
+            border-left: 1px solid var(--line);
 
-      background:
-        radial-gradient(
-          circle at 56% 44%,
-          rgba(63, 183, 236, 0.11),
-          transparent 28%
-        ),
-        linear-gradient(
-          145deg,
-          rgba(17, 35, 57, 0.66),
-          rgba(7, 14, 25, 0.88)
-        );
-    }
+            background:
+                radial-gradient(circle at 56% 44%,
+                    rgba(63, 183, 236, 0.11),
+                    transparent 28%),
+                linear-gradient(145deg, rgba(17, 35, 57, 0.66), rgba(7, 14, 25, 0.88));
+        }
 
-    .loom-visual::after {
-      content: "";
-      position: absolute;
-      inset: 0;
+        .loom-visual::after {
+            content: "";
+            position: absolute;
+            inset: 0;
 
-      background-image:
-        linear-gradient(
-          rgba(103, 232, 249, 0.028) 1px,
-          transparent 1px
-        ),
-        linear-gradient(
-          90deg,
-          rgba(103, 232, 249, 0.028) 1px,
-          transparent 1px
-        );
+            background-image:
+                linear-gradient(rgba(103, 232, 249, 0.028) 1px, transparent 1px),
+                linear-gradient(90deg,
+                    rgba(103, 232, 249, 0.028) 1px,
+                    transparent 1px);
 
-      background-size: 38px 38px;
-      mask-image:
-        radial-gradient(
-          circle,
-          black,
-          transparent 72%
-        );
-    }
+            background-size: 38px 38px;
+            mask-image: radial-gradient(circle, black, transparent 72%);
+        }
 
-    .loom-map {
-      position: relative;
-      z-index: 2;
-      width: 84%;
-    }
+        .loom-map {
+            position: relative;
+            z-index: 2;
+            width: 84%;
+        }
 
-    .event-node {
-      fill: #08131f;
-      stroke: var(--cyan);
-      stroke-width: 1.5;
+        .event-node {
+            fill: #08131f;
+            stroke: var(--cyan);
+            stroke-width: 1.5;
 
-      filter: drop-shadow(0 0 5px rgba(103, 232, 249, 0.25));
-    }
+            filter: drop-shadow(0 0 5px rgba(103, 232, 249, 0.25));
+        }
 
-    .event-node.alert {
-      stroke: var(--violet);
-    }
+        .event-node.alert {
+            stroke: var(--violet);
+        }
 
-    .event-node.origin {
-      stroke: var(--amber);
-    }
+        .event-node.origin {
+            stroke: var(--amber);
+        }
 
-    .event-link {
-      fill: none;
-      stroke: rgba(103, 232, 249, 0.44);
-      stroke-width: 1.2;
-    }
+        .event-link {
+            fill: none;
+            stroke: rgba(103, 232, 249, 0.44);
+            stroke-width: 1.2;
+        }
 
-    .event-link.probable {
-      stroke: rgba(152, 125, 255, 0.65);
-      stroke-dasharray: 5 6;
-    }
+        .event-link.probable {
+            stroke: rgba(152, 125, 255, 0.65);
+            stroke-dasharray: 5 6;
+        }
 
-    .event-pulse {
-      fill: var(--cyan);
-      filter: drop-shadow(0 0 7px var(--cyan));
-    }
+        .event-pulse {
+            fill: var(--cyan);
+            filter: drop-shadow(0 0 7px var(--cyan));
+        }
 
-    .event-label {
-      fill: #aebfd0;
+        .event-label {
+            fill: #aebfd0;
 
-      font-family:
-        ui-monospace,
-        SFMono-Regular,
-        Menlo,
-        Monaco,
-        Consolas,
-        monospace;
+            font-family:
+                ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
-      font-size: 10px;
-      letter-spacing: 0.04em;
-    }
+            font-size: 10px;
+            letter-spacing: 0.04em;
+        }
 
-    .event-small {
-      fill: #688197;
-      font-size: 8px;
-    }
+        .event-small {
+            fill: #688197;
+            font-size: 8px;
+        }
 
-    /* ============================================================
+        /* ============================================================
        PHILOSOPHY
        ============================================================ */
 
-    .philosophy {
-      text-align: center;
-    }
+        .philosophy {
+            text-align: center;
+        }
 
-    .philosophy .section-label {
-      justify-content: center;
-    }
+        .philosophy .section-label {
+            justify-content: center;
+        }
 
-    .philosophy .section-label::after {
-      content: "";
-      width: 28px;
-      height: 1px;
+        .philosophy .section-label::after {
+            content: "";
+            width: 28px;
+            height: 1px;
 
-      background: var(--cyan);
-      box-shadow: 0 0 12px var(--cyan);
-    }
+            background: var(--cyan);
+            box-shadow: 0 0 12px var(--cyan);
+        }
 
-    .quote {
-      max-width: 940px;
-      margin: 0 auto;
+        .quote {
+            max-width: 940px;
+            margin: 0 auto;
 
-      font-size: clamp(2rem, 5.2vw, 4.8rem);
-      line-height: 1.06;
-      letter-spacing: -0.045em;
-    }
+            font-size: clamp(2rem, 5.2vw, 4.8rem);
+            line-height: 1.06;
+            letter-spacing: -0.045em;
+        }
 
-    .quote em {
-      color: var(--cyan-bright);
-      font-style: normal;
-    }
+        .quote em {
+            color: var(--cyan-bright);
+            font-style: normal;
+        }
 
-    .philosophy-copy {
-      max-width: 650px;
-      margin: 30px auto 0;
+        .philosophy-copy {
+            max-width: 650px;
+            margin: 30px auto 0;
 
-      color: var(--text-muted);
-      font-size: 1rem;
-    }
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
 
-    /* ============================================================
+        /* ============================================================
        FOOTER
        ============================================================ */
 
-    footer {
-      padding: 40px 0 50px;
-    }
+        footer {
+            padding: 40px 0 50px;
+        }
 
-    .footer-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 24px;
+        .footer-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
 
-      padding-top: 28px;
+            padding-top: 28px;
 
-      border-top: 1px solid var(--line);
-    }
+            border-top: 1px solid var(--line);
+        }
 
-    .footer-left {
-      color: var(--text-muted);
-      font-size: 0.8rem;
-    }
+        .footer-left {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
 
-    .footer-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 18px;
-    }
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+        }
 
-    .footer-links a {
-      position: relative;
+        .footer-links a {
+            position: relative;
 
-      color: var(--text-soft);
-      font-size: 0.82rem;
+            color: var(--text-soft);
+            font-size: 0.82rem;
 
-      transition: color 180ms ease;
-    }
+            transition: color 180ms ease;
+        }
 
-    .footer-links a:hover {
-      color: var(--cyan);
-    }
+        .footer-links a:hover {
+            color: var(--cyan);
+        }
 
-    /* ============================================================
+        /* ============================================================
        SCROLL REVEAL
        ============================================================ */
 
-    .reveal {
-      opacity: 0;
-      transform: translateY(24px);
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
 
-      transition:
-        opacity 700ms ease,
-        transform 700ms ease;
-    }
+            transition:
+                opacity 700ms ease,
+                transform 700ms ease;
+        }
 
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
 
-    /* ============================================================
+        /* ============================================================
        RESPONSIVE
        ============================================================ */
 
-    @media (max-width: 900px) {
-      .nav-links a:not(:last-child) {
-        display: none;
-      }
+        @media (max-width: 900px) {
+            .nav-links a:not(:last-child) {
+                display: none;
+            }
 
-      .hero {
-        min-height: 920px;
-        align-items: flex-start;
-      }
+            .hero {
+                min-height: 920px;
+                align-items: flex-start;
+            }
 
-      .hero-content {
-        width: 100%;
-        padding-top: 120px;
-      }
+            .hero-content {
+                width: 100%;
+                padding-top: 120px;
+            }
 
-      h1 {
-        font-size: clamp(4rem, 18vw, 7rem);
-      }
+            h1 {
+                font-size: clamp(4rem, 18vw, 7rem);
+            }
 
-      .guardian {
-        right: 5%;
-        bottom: 2%;
-        width: 225px;
-      }
+            .guardian {
+                right: 5%;
+                bottom: 2%;
+                width: 225px;
+            }
 
-      .city-layer {
-        left: -250px;
-        width: calc(100% + 420px);
-      }
+            .city-layer {
+                left: -250px;
+                width: calc(100% + 420px);
+            }
 
-      .about-grid {
-        grid-template-columns: 1fr;
-        gap: 50px;
-      }
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 50px;
+            }
 
-      .project-card {
-        grid-template-columns: 1fr;
-      }
+            .project-card {
+                grid-template-columns: 1fr;
+            }
 
-      .loom-visual {
-        min-height: 460px;
-        border-top: 1px solid var(--line);
-        border-left: 0;
-      }
-    }
+            .loom-visual {
+                min-height: 460px;
+                border-top: 1px solid var(--line);
+                border-left: 0;
+            }
+        }
 
-    @media (max-width: 600px) {
-      .container {
-        width: min(calc(100% - 28px), var(--max-width));
-      }
+        @media (max-width: 600px) {
+            .container {
+                width: min(calc(100% - 28px), var(--max-width));
+            }
 
-      .section {
-        padding: 90px 0;
-      }
+            .section {
+                padding: 90px 0;
+            }
 
-      .brand-text {
-        display: none;
-      }
+            .brand-text {
+                display: none;
+            }
 
-      .nav {
-        width: calc(100% - 24px);
-      }
+            .nav {
+                width: calc(100% - 24px);
+            }
 
-      .hero {
-        min-height: 860px;
-      }
+            .hero {
+                min-height: 860px;
+            }
 
-      .hero-content {
-        padding-top: 90px;
-      }
+            .hero-content {
+                padding-top: 90px;
+            }
 
-      .hero-role {
-        max-width: 300px;
-      }
+            .hero-role {
+                max-width: 300px;
+            }
 
-      .hero-description {
-        max-width: 95%;
-      }
+            .hero-description {
+                max-width: 95%;
+            }
 
-      .guardian {
-        right: -10px;
-        width: 190px;
-      }
+            .guardian {
+                right: -10px;
+                width: 190px;
+            }
 
-      .scroll-indicator {
-        display: none;
-      }
+            .scroll-indicator {
+                display: none;
+            }
 
-      .project-copy {
-        padding: 34px 25px 40px;
-      }
+            .project-copy {
+                padding: 34px 25px 40px;
+            }
 
-      .loom-visual {
-        min-height: 370px;
-      }
+            .loom-visual {
+                min-height: 370px;
+            }
 
-      .footer-inner {
-        align-items: flex-start;
-        flex-direction: column;
-      }
-    }
+            .footer-inner {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
 
-    @media (prefers-reduced-motion: reduce) {
-      html {
-        scroll-behavior: auto;
-      }
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
 
-      *,
-      *::before,
-      *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-      }
-    }
-  </style>
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
 </head>
 
 <body>
-
-  <!-- ==========================================================
+    <!-- ==========================================================
        NAVIGATION
        ========================================================== -->
 
-  <div class="nav-wrap">
-    <nav class="nav" aria-label="Primary navigation">
+    <div class="nav-wrap">
+        <nav class="nav" aria-label="Primary navigation">
+            <a class="brand" href="#top">
+                <span class="brand-mark" aria-hidden="true"></span>
+                <span class="brand-text">Jonatan Roytgarts</span>
+            </a>
 
-      <a class="brand" href="#top">
-        <span class="brand-mark" aria-hidden="true"></span>
-        <span class="brand-text">Jonatan Roytgarts</span>
-      </a>
+            <div class="nav-links">
+                <a href="#about">Perspective</a>
+                <a href="#incident-loom">Incident Loom</a>
 
-      <div class="nav-links">
-        <a href="#about">Perspective</a>
-        <a href="#incident-loom">Incident Loom</a>
+                <a href="https://github.com/jonatan-roytgarts" target="_blank" rel="noopener noreferrer">
+                    GitHub ↗
+                </a>
+            </div>
+        </nav>
+    </div>
 
-        <a
-          href="https://github.com/jonatan-roytgarts"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          GitHub ↗
-        </a>
-      </div>
-
-    </nav>
-  </div>
-
-
-  <!-- ==========================================================
+    <!-- ==========================================================
        HERO
        ========================================================== -->
 
-  <header class="hero" id="top">
+    <header class="hero" id="top">
+        <div class="hero-art" aria-hidden="true">
+            <div class="hero-sky"></div>
+            <div class="moon-glow"></div>
 
-    <div class="hero-art" aria-hidden="true">
+            <!-- Digital signal network -->
 
-      <div class="hero-sky"></div>
-      <div class="moon-glow"></div>
+            <svg class="data-network" viewBox="0 0 1440 900" preserveAspectRatio="none">
+                <defs>
+                    <linearGradient id="threadGradient" x1="0" y1="0" x2="1" y2="0">
+                        <stop offset="0%" stop-color="#67e8f9" stop-opacity="0" />
+                        <stop offset="35%" stop-color="#67e8f9" stop-opacity=".65" />
+                        <stop offset="70%" stop-color="#987dff" stop-opacity=".5" />
+                        <stop offset="100%" stop-color="#987dff" stop-opacity="0" />
+                    </linearGradient>
+                </defs>
 
+                <path class="network-path" d="M250 680 C430 470 610 630 790 410 S1110 280 1370 355" />
 
-      <!-- Digital signal network -->
+                <path class="network-path secondary" d="M80 570 C330 720 450 370 720 530 S1100 670 1450 440" />
 
-      <svg
-        class="data-network"
-        viewBox="0 0 1440 900"
-        preserveAspectRatio="none"
-      >
-        <defs>
-          <linearGradient
-            id="threadGradient"
-            x1="0"
-            y1="0"
-            x2="1"
-            y2="0"
-          >
-            <stop offset="0%" stop-color="#67e8f9" stop-opacity="0" />
-            <stop offset="35%" stop-color="#67e8f9" stop-opacity=".65" />
-            <stop offset="70%" stop-color="#987dff" stop-opacity=".5" />
-            <stop offset="100%" stop-color="#987dff" stop-opacity="0" />
-          </linearGradient>
-        </defs>
+                <path class="network-path secondary" d="M520 770 C640 610 780 670 890 545 S1100 390 1320 520" />
 
-        <path
-          class="network-path"
-          d="M250 680 C430 470 610 630 790 410 S1110 280 1370 355"
-        />
+                <circle class="node" cx="390" cy="550" r="3" />
+                <circle class="node" cx="620" cy="550" r="3" />
+                <circle class="node" cx="795" cy="410" r="3" />
+                <circle class="node" cx="1015" cy="328" r="3" />
+                <circle class="node" cx="1190" cy="317" r="3" />
+                <circle class="node" cx="720" cy="530" r="3" />
+                <circle class="node" cx="1080" cy="610" r="3" />
+            </svg>
 
-        <path
-          class="network-path secondary"
-          d="M80 570 C330 720 450 370 720 530 S1100 670 1450 440"
-        />
+            <!-- Distant skyline -->
 
-        <path
-          class="network-path secondary"
-          d="M520 770 C640 610 780 670 890 545 S1100 390 1320 520"
-        />
+            <svg class="city-layer city-back" viewBox="0 0 1440 500" preserveAspectRatio="none">
+                <g fill="#13263a">
+                    <path d="M0 270 H95 V500 H0 Z" />
+                    <path d="M80 305 H165 V500 H80 Z" />
+                    <path d="M160 215 H245 V500 H160 Z" />
+                    <path d="M235 255 H335 V500 H235 Z" />
+                    <path d="M322 165 H420 V500 H322 Z" />
+                    <path d="M414 245 H505 V500 H414 Z" />
+                    <path d="M495 195 H590 V500 H495 Z" />
+                    <path d="M580 150 H690 V500 H580 Z" />
+                    <path d="M680 270 H770 V500 H680 Z" />
+                    <path d="M760 190 H850 V500 H760 Z" />
+                    <path d="M840 130 H955 V500 H840 Z" />
+                    <path d="M945 245 H1030 V500 H945 Z" />
+                    <path d="M1018 170 H1125 V500 H1018 Z" />
+                    <path d="M1115 230 H1210 V500 H1115 Z" />
+                    <path d="M1198 185 H1300 V500 H1198 Z" />
+                    <path d="M1288 235 H1440 V500 H1288 Z" />
+                </g>
+            </svg>
 
-        <circle class="node" cx="390" cy="550" r="3" />
-        <circle class="node" cx="620" cy="550" r="3" />
-        <circle class="node" cx="795" cy="410" r="3" />
-        <circle class="node" cx="1015" cy="328" r="3" />
-        <circle class="node" cx="1190" cy="317" r="3" />
-        <circle class="node" cx="720" cy="530" r="3" />
-        <circle class="node" cx="1080" cy="610" r="3" />
-      </svg>
+            <!-- Foreground skyline -->
 
+            <svg class="city-layer city-front" viewBox="0 0 1440 500" preserveAspectRatio="none">
+                <defs>
+                    <linearGradient id="buildingGradientFront" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#102235" />
+                        <stop offset="100%" stop-color="#04070d" />
+                    </linearGradient>
+                </defs>
 
-      <!-- Distant skyline -->
+                <!-- buildings -->
+                <g fill="url(#buildingGradientFront)">
+                    <path d="M0 300 H110 V500 H0 Z" />
+                    <path d="M105 225 H220 V500 H105 Z" />
+                    <path d="M215 275 H305 V500 H215 Z" />
+                    <path d="M295 175 H390 V500 H295 Z" />
+                    <path d="M378 115 H455 V500 H378 Z" />
+                    <path d="M448 240 H535 V500 H448 Z" />
+                    <path d="M525 190 H620 V500 H525 Z" />
+                    <path d="M610 140 H710 V500 H610 Z" />
+                    <path d="M700 235 H785 V500 H700 Z" />
+                    <path d="M775 170 H880 V500 H775 Z" />
+                    <path d="M872 95 H970 V500 H872 Z" />
+                    <path d="M958 215 H1055 V500 H958 Z" />
+                    <path d="M1045 145 H1155 V500 H1045 Z" />
+                    <path d="M1145 255 H1240 V500 H1145 Z" />
+                    <path d="M1230 205 H1320 V500 H1230 Z" />
+                    <path d="M1305 165 H1440 V500 H1305 Z" />
+                </g>
 
-      <svg
-        class="city-layer city-back"
-        viewBox="0 0 1440 500"
-        preserveAspectRatio="none"
-      >
-        <g fill="#14283d">
+                <!-- antenna/spire details -->
+                <g stroke="#1d3a55" stroke-width="3" opacity="0.9">
+                    <line x1="420" y1="115" x2="420" y2="78" />
+                    <line x1="922" y1="95" x2="922" y2="52" />
+                    <line x1="1095" y1="145" x2="1095" y2="92" />
+                </g>
 
-          <rect x="0" y="250" width="95" height="250" />
-          <rect x="110" y="300" width="70" height="200" />
-          <rect x="190" y="180" width="90" height="320" />
+                <!-- subtle rooftop telemetry pings -->
+                <g>
+                    <circle class="telemetry-ping" cx="420" cy="78" r="3" />
+                    <circle class="telemetry-ping alt" cx="922" cy="52" r="3" />
+                    <circle class="telemetry-ping" cx="1095" cy="92" r="3" />
+                    <circle class="telemetry-ping alt" cx="685" cy="140" r="2.6" />
+                </g>
 
-          <rect x="305" y="260" width="110" height="240" />
-          <rect x="430" y="110" width="105" height="390" />
+                <!-- subtle emitted threads from buildings -->
+                <g>
+                    <path class="telemetry-thread" d="M420 78 C520 70 615 115 710 140" />
+                    <path class="telemetry-thread alt" d="M922 52 C1000 60 1055 76 1095 92" />
+                    <path class="telemetry-thread" d="M685 140 C770 160 850 135 922 52" />
+                </g>
 
-          <rect x="565" y="220" width="70" height="280" />
-          <rect x="650" y="165" width="120" height="335" />
+                <!-- windows -->
+                <g>
+                    <rect class="window-light" x="27" y="352" width="8" height="22" />
+                    <rect class="window-light dim" x="47" y="352" width="8" height="22" />
+                    <rect class="window-light" x="132" y="274" width="8" height="22" />
+                    <rect class="window-light dim" x="153" y="274" width="8" height="22" />
+                    <rect class="window-light" x="319" y="225" width="8" height="22" />
+                    <rect class="window-light dim" x="340" y="225" width="8" height="22" />
+                    <rect class="window-light" x="405" y="168" width="8" height="22" />
+                    <rect class="window-light dim" x="426" y="168" width="8" height="22" />
+                    <rect class="window-light" x="552" y="255" width="8" height="22" />
+                    <rect class="window-light dim" x="575" y="255" width="8" height="22" />
+                    <rect class="window-light" x="642" y="198" width="8" height="22" />
+                    <rect class="window-light dim" x="665" y="198" width="8" height="22" />
+                    <rect class="window-light" x="804" y="228" width="8" height="22" />
+                    <rect class="window-light dim" x="826" y="228" width="8" height="22" />
+                    <rect class="window-light" x="904" y="145" width="8" height="22" />
+                    <rect class="window-light dim" x="928" y="145" width="8" height="22" />
+                    <rect class="window-light" x="1075" y="185" width="8" height="22" />
+                    <rect class="window-light dim" x="1098" y="185" width="8" height="22" />
+                    <rect class="window-light" x="1262" y="235" width="8" height="22" />
+                    <rect class="window-light dim" x="1284" y="235" width="8" height="22" />
+                </g>
+            </svg>
 
-          <rect x="790" y="290" width="88" height="210" />
-          <rect x="900" y="130" width="100" height="370" />
+            <!-- Guardian silhouette -->
 
-          <rect x="1020" y="230" width="60" height="270" />
-          <rect x="1095" y="90" width="128" height="410" />
+            <svg class="guardian" viewBox="0 0 220 520">
+                <defs>
+                    <linearGradient id="guardianBodyNew" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#182838" />
+                        <stop offset="100%" stop-color="#05080d" />
+                    </linearGradient>
 
-          <rect x="1240" y="245" width="95" height="255" />
-          <rect x="1350" y="170" width="90" height="330" />
+                    <linearGradient id="guardianAccentNew" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stop-color="#6de8f8" />
+                        <stop offset="100%" stop-color="#8877ff" />
+                    </linearGradient>
+                </defs>
 
-        </g>
-      </svg>
+                <!-- head -->
+                <circle cx="112" cy="58" r="30" fill="#0b1119" />
 
+                <!-- hair -->
+                <path d="M82 50 C86 19 135 15 144 47 L136 42 L128 31 L118 42 L111 28 L103 40 L92 33 L94 47 Z"
+                    fill="#121d28" />
 
-      <!-- Foreground skyline -->
+                <!-- neck -->
+                <rect x="103" y="84" width="16" height="14" rx="5" fill="#0a0f16" />
 
-      <svg
-        class="city-layer city-front"
-        viewBox="0 0 1440 470"
-        preserveAspectRatio="none"
-      >
-        <defs>
-          <linearGradient
-            id="buildingGradient"
-            x1="0"
-            y1="0"
-            x2="0"
-            y2="1"
-          >
-            <stop offset="0%" stop-color="#0d1c2b" />
-            <stop offset="100%" stop-color="#050910" />
-          </linearGradient>
-        </defs>
+                <!-- torso / coat -->
+                <path d="
+      M81 101
+      C61 118 50 149 47 190
+      L38 312
+      C36 337 42 350 57 356
+      L71 244
+      L77 268
+      L77 384
+      C77 398 83 405 96 405
+      L127 405
+      C140 405 146 398 146 384
+      L146 268
+      L152 244
+      L166 356
+      C182 349 186 336 184 311
+      L175 190
+      C172 149 160 117 141 101
+      Z
+    " fill="url(#guardianBodyNew)" />
 
-        <g fill="url(#buildingGradient)">
+                <!-- center opening of coat -->
+                <path d="
+      M98 233
+      L91 405
+      L113 405
+      L106 279
+      L119 279
+      L111 405
+      L132 405
+      L125 233
+      Z
+    " fill="#060b11" opacity="0.96" />
 
-          <path d="M0 300 H145 V470 H0 Z" />
-          <path d="M120 235 H255 V470 H120 Z" />
+                <!-- legs -->
+                <path d="
+      M96 404
+      L86 508
+      H111
+      L116 430
+      L122 508
+      H147
+      L136 404
+      Z
+    " fill="#04070c" />
 
-          <path d="M235 170 H345 V470 H235 Z" />
-          <path d="M290 120 H315 V170 H290 Z" />
+                <!-- arms -->
+                <path d="M46 187 L24 327 L41 332 L62 217 Z" fill="#0a1119" />
+                <path d="M176 188 L197 327 L180 332 L160 217 Z" fill="#0a1119" />
 
-          <path d="M350 285 H455 V470 H350 Z" />
-          <path d="M445 215 H570 V470 H445 Z" />
+                <!-- subtle accent on sleeve/device -->
+                <rect class="guardian-light" x="160" y="215" width="12" height="28" rx="4"
+                    fill="url(#guardianAccentNew)" />
 
-          <path d="M565 305 H650 V470 H565 Z" />
-
-          <path d="M650 185 H780 V470 H650 Z" />
-          <path d="M705 130 H725 V185 H705 Z" />
-
-          <path d="M765 275 H890 V470 H765 Z" />
-          <path d="M875 145 H990 V470 H875 Z" />
-
-          <path d="M970 245 H1075 V470 H970 Z" />
-
-          <path d="M1060 175 H1200 V470 H1060 Z" />
-          <path d="M1120 95 H1140 V175 H1120 Z" />
-
-          <path d="M1185 265 H1305 V470 H1185 Z" />
-          <path d="M1290 205 H1440 V470 H1290 Z" />
-
-        </g>
-
-
-        <!-- Window lights -->
-
-        <g fill="#69dff3" opacity=".18">
-
-          <rect x="270" y="205" width="7" height="18" />
-          <rect x="295" y="205" width="7" height="18" />
-          <rect x="320" y="205" width="7" height="18" />
-
-          <rect x="475" y="250" width="8" height="20" />
-          <rect x="510" y="250" width="8" height="20" />
-          <rect x="545" y="250" width="8" height="20" />
-
-          <rect x="685" y="220" width="8" height="20" />
-          <rect x="720" y="220" width="8" height="20" />
-          <rect x="755" y="220" width="8" height="20" />
-
-          <rect x="910" y="190" width="8" height="20" />
-          <rect x="945" y="190" width="8" height="20" />
-
-          <rect x="1090" y="215" width="8" height="20" />
-          <rect x="1130" y="215" width="8" height="20" />
-          <rect x="1170" y="215" width="8" height="20" />
-
-        </g>
-
-      </svg>
-
-
-      <!-- Guardian silhouette -->
-
-      <svg
-        class="guardian"
-        viewBox="0 0 300 620"
-      >
-        <defs>
-          <linearGradient
-            id="guardianBody"
-            x1="0"
-            y1="0"
-            x2="0"
-            y2="1"
-          >
-            <stop offset="0%" stop-color="#172738" />
-            <stop offset="100%" stop-color="#05080d" />
-          </linearGradient>
-
-          <linearGradient
-            id="guardianEdge"
-            x1="0"
-            y1="0"
-            x2="1"
-            y2="1"
-          >
-            <stop offset="0%" stop-color="#6feafa" />
-            <stop offset="100%" stop-color="#6957ca" />
-          </linearGradient>
-        </defs>
-
-        <!-- head -->
-        <ellipse
-          cx="153"
-          cy="77"
-          rx="44"
-          ry="53"
-          fill="#0b111a"
-        />
-
-        <!-- hair -->
-        <path
-          d="
-            M112 70
-            C115 22 188 3 207 58
-            L193 51
-            L187 30
-            L172 48
-            L154 23
-            L147 47
-            L126 34
-            L130 58
-            Z
-          "
-          fill="#111d2a"
-        />
-
-        <!-- coat / torso -->
-        <path
-          d="
-            M119 127
-            C96 145 83 190 79 235
-            L53 398
-            L95 416
-            L116 306
-            L113 525
-            L191 525
-            L194 306
-            L217 416
-            L257 399
-            L224 232
-            C218 188 208 149 185 128
-            Z
-          "
-          fill="url(#guardianBody)"
-        />
-
-        <!-- coat tails -->
-        <path
-          d="
-            M113 340
-            L77 540
-            L133 513
-            L151 390
-            L167 514
-            L224 547
-            L192 340
-            Z
-          "
-          fill="#070c12"
-        />
-
-        <!-- legs -->
-        <path
-          d="
-            M122 501
-            L105 610
-            H140
-            L154 527
-            L170 610
-            H204
-            L186 502
-            Z
-          "
-          fill="#05080d"
-        />
-
-        <!-- subtle illuminated device -->
-        <rect
-          class="guardian-light"
-          x="199"
-          y="265"
-          width="15"
-          height="35"
-          rx="5"
-          fill="url(#guardianEdge)"
-        />
-
-        <!-- shoulder edge -->
-        <path
-          class="guardian-light"
-          d="M119 129 C95 151 87 178 82 210"
-          fill="none"
-          stroke="#67e8f9"
-          stroke-opacity=".34"
-          stroke-width="2"
-        />
-
-      </svg>
-
-      <div class="horizon-glow"></div>
-
-    </div>
-
-
-    <div class="container">
-
-      <div class="hero-content">
-
-        <div class="eyebrow">
-          <span class="eyebrow-dot"></span>
-          Security · Engineering · Systems
+                <!-- shoulder edge -->
+                <path class="guardian-light" d="M81 102 C64 118 55 139 50 164" fill="none" stroke="#67e8f9"
+                    stroke-opacity=".28" stroke-width="2" />
+            </svg>
+            <div class="horizon-glow"></div>
         </div>
 
-        <h1>
-          <span class="hero-title-line">Jonatan</span>
-          <span class="hero-title-line">Roytgarts</span>
-        </h1>
+        <div class="container">
+            <div class="hero-content">
+                <div class="eyebrow">
+                    <span class="eyebrow-dot"></span>
+                    Security · Engineering · Systems
+                </div>
 
-        <div class="hero-role">
-          Cybersecurity Analyst · Builder · Systems Thinker
+                <h1>
+                    <span class="hero-title-line">Jonatan</span>
+                    <span class="hero-title-line">Roytgarts</span>
+                </h1>
+
+                <div class="hero-role">
+                    Cybersecurity Analyst · Builder · Systems Thinker
+                </div>
+
+                <p class="hero-description">
+                    I investigate complex systems, trace hidden signals, and build tools
+                    that turn fragmented security telemetry into understanding.
+                </p>
+
+                <div class="hero-actions">
+                    <a class="button button-primary" href="#incident-loom">
+                        Explore Incident Loom
+                        <span class="button-arrow">→</span>
+                    </a>
+
+                    <a class="button" href="https://github.com/jonatan-roytgarts" target="_blank"
+                        rel="noopener noreferrer">
+                        GitHub ↗
+                    </a>
+                </div>
+            </div>
         </div>
 
-        <p class="hero-description">
-          I investigate complex systems, trace hidden signals, and build
-          tools that turn fragmented security telemetry into understanding.
-        </p>
-
-        <div class="hero-actions">
-
-          <a
-            class="button button-primary"
-            href="#incident-loom"
-          >
-            Explore Incident Loom
-            <span class="button-arrow">→</span>
-          </a>
-
-          <a
-            class="button"
-            href="https://github.com/jonatan-roytgarts"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            GitHub ↗
-          </a>
-
+        <div class="scroll-indicator">
+            Scroll
+            <span class="scroll-line"></span>
         </div>
+    </header>
 
-      </div>
-
-    </div>
-
-    <div class="scroll-indicator">
-      Scroll
-      <span class="scroll-line"></span>
-    </div>
-
-  </header>
-
-
-  <!-- ==========================================================
+    <!-- ==========================================================
        PROFESSIONAL PERSPECTIVE
        ========================================================== -->
 
-  <main>
+    <main>
+        <section class="section" id="about">
+            <div class="container about-grid">
+                <div class="reveal">
+                    <div class="section-label">Perspective</div>
 
-    <section
-      class="section"
-      id="about"
-    >
+                    <h2 class="section-heading">
+                        Security begins with understanding the system.
+                    </h2>
 
-      <div class="container about-grid">
+                    <p class="section-copy">
+                        My work sits at the intersection of cybersecurity, investigation,
+                        engineering, and systems thinking. I am interested not only in
+                        detecting that something happened, but in understanding how events
+                        connect, why systems fail, and how technical evidence can become
+                        an explainable story.
+                    </p>
+                </div>
 
-        <div class="reveal">
+                <div class="principles reveal">
+                    <article class="principle">
+                        <div class="principle-number">01</div>
 
-          <div class="section-label">
-            Perspective
-          </div>
+                        <h3>Signal over noise</h3>
 
-          <h2 class="section-heading">
-            Security begins with understanding the system.
-          </h2>
+                        <p>
+                            Security produces enormous amounts of data. The useful part is
+                            finding the evidence that actually changes our understanding.
+                        </p>
+                    </article>
 
-          <p class="section-copy">
-            My work sits at the intersection of cybersecurity,
-            investigation, engineering, and systems thinking.
-            I am interested not only in detecting that something happened,
-            but in understanding how events connect, why systems fail,
-            and how technical evidence can become an explainable story.
-          </p>
+                    <article class="principle">
+                        <div class="principle-number">02</div>
 
-        </div>
+                        <h3>Explainability matters</h3>
 
+                        <p>
+                            A conclusion is more valuable when an analyst can show how the
+                            evidence produced it.
+                        </p>
+                    </article>
 
-        <div class="principles reveal">
+                    <article class="principle">
+                        <div class="principle-number">03</div>
 
-          <article class="principle">
-            <div class="principle-number">01</div>
+                        <h3>Build for the investigator</h3>
 
-            <h3>Signal over noise</h3>
+                        <p>
+                            Good tooling should reduce cognitive load and help humans reason
+                            about complicated environments.
+                        </p>
+                    </article>
+                </div>
+            </div>
+        </section>
 
-            <p>
-              Security produces enormous amounts of data.
-              The useful part is finding the evidence that actually
-              changes our understanding.
-            </p>
-          </article>
-
-
-          <article class="principle">
-            <div class="principle-number">02</div>
-
-            <h3>Explainability matters</h3>
-
-            <p>
-              A conclusion is more valuable when an analyst can show
-              how the evidence produced it.
-            </p>
-          </article>
-
-
-          <article class="principle">
-            <div class="principle-number">03</div>
-
-            <h3>Build for the investigator</h3>
-
-            <p>
-              Good tooling should reduce cognitive load and help humans
-              reason about complicated environments.
-            </p>
-          </article>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- ========================================================
+        <!-- ========================================================
          INCIDENT LOOM
          ======================================================== -->
 
-    <section
-      class="section project-section"
-      id="incident-loom"
-    >
+        <section class="section project-section" id="incident-loom">
+            <div class="container">
+                <div class="reveal">
+                    <div class="section-label">Selected Work</div>
 
-      <div class="container">
+                    <h2 class="section-heading">
+                        One project. One problem worth solving.
+                    </h2>
 
-        <div class="reveal">
+                    <p class="section-copy">
+                        Incident Loom is where I am developing and demonstrating my
+                        current approach to security analysis, software design, telemetry
+                        normalization, evidence correlation, and explainable incident
+                        reconstruction.
+                    </p>
+                </div>
 
-          <div class="section-label">
-            Selected Work
-          </div>
+                <article class="project-card reveal">
+                    <div class="project-copy">
+                        <div class="project-kicker">Security Investigation Platform</div>
 
-          <h2 class="section-heading">
-            One project. One problem worth solving.
-          </h2>
+                        <h3 class="project-name">
+                            Incident<br />
+                            Loom
+                        </h3>
 
-          <p class="section-copy">
-            Incident Loom is where I am developing and demonstrating
-            my current approach to security analysis, software design,
-            telemetry normalization, evidence correlation, and
-            explainable incident reconstruction.
-          </p>
+                        <p class="project-description">
+                            A vendor-neutral security investigation project designed to
+                            transform fragmented telemetry into an explainable attack
+                            timeline, probable event chain, MITRE ATT&amp;CK mappings, and
+                            confidence-aware conclusions.
+                        </p>
 
-        </div>
+                        <ul class="project-points">
+                            <li>
+                                Normalize heterogeneous security events into a common internal
+                                model.
+                            </li>
 
+                            <li>
+                                Correlate evidence across endpoint, identity, network, cloud,
+                                and other telemetry.
+                            </li>
 
-        <article class="project-card reveal">
+                            <li>
+                                Preserve the reasoning behind conclusions rather than
+                                producing unexplained alerts.
+                            </li>
 
-          <div class="project-copy">
+                            <li>
+                                Help an investigator move from many disconnected events toward
+                                one coherent incident narrative.
+                            </li>
+                        </ul>
 
-            <div class="project-kicker">
-              Security Investigation Platform
+                        <div class="project-action">
+                            <a class="button" href="https://github.com/jonatan-roytgarts/incident-loom" target="_blank"
+                                rel="noopener noreferrer">
+                                View the repository
+                                <span class="button-arrow">↗</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Incident correlation artwork -->
+
+                    <div class="loom-visual"
+                        aria-label="Abstract visualization of security events being correlated into an incident chain">
+                        <svg class="loom-map" viewBox="0 0 620 500" role="img">
+                            <!-- relationships -->
+
+                            <path class="event-link" d="M92 126 C180 126 185 205 260 205" />
+
+                            <path class="event-link" d="M92 126 C190 110 275 86 362 110" />
+
+                            <path class="event-link probable" d="M260 205 C338 205 350 263 432 263" />
+
+                            <path class="event-link" d="M362 110 C430 110 451 177 469 220" />
+
+                            <path class="event-link" d="M432 263 C475 303 468 348 521 371" />
+
+                            <path class="event-link probable" d="M260 205 C245 310 340 365 433 377" />
+
+                            <path class="event-link" d="M433 377 C467 378 491 375 521 371" />
+
+                            <!-- origin -->
+
+                            <circle class="event-node origin" cx="92" cy="126" r="28" />
+
+                            <circle class="event-pulse" cx="92" cy="126" r="3" />
+
+                            <text class="event-label" x="92" y="178" text-anchor="middle">
+                                INITIAL ACCESS
+                            </text>
+
+                            <text class="event-label event-small" x="92" y="193" text-anchor="middle">
+                                confidence 0.82
+                            </text>
+
+                            <!-- event 2 -->
+
+                            <circle class="event-node" cx="260" cy="205" r="25" />
+
+                            <circle class="event-pulse" cx="260" cy="205" r="3" />
+
+                            <text class="event-label" x="260" y="251" text-anchor="middle">
+                                PROCESS
+                            </text>
+
+                            <text class="event-label event-small" x="260" y="266" text-anchor="middle">
+                                endpoint telemetry
+                            </text>
+
+                            <!-- event 3 -->
+
+                            <circle class="event-node" cx="362" cy="110" r="25" />
+
+                            <circle class="event-pulse" cx="362" cy="110" r="3" />
+
+                            <text class="event-label" x="362" y="66" text-anchor="middle">
+                                IDENTITY
+                            </text>
+
+                            <!-- event 4 -->
+
+                            <circle class="event-node alert" cx="432" cy="263" r="28" />
+
+                            <circle class="event-pulse" cx="432" cy="263" r="3" />
+
+                            <text class="event-label" x="432" y="312" text-anchor="middle">
+                                CORRELATION
+                            </text>
+
+                            <!-- event 5 -->
+
+                            <circle class="event-node" cx="433" cy="377" r="24" />
+
+                            <circle class="event-pulse" cx="433" cy="377" r="3" />
+
+                            <text class="event-label" x="433" y="424" text-anchor="middle">
+                                NETWORK
+                            </text>
+
+                            <!-- final -->
+
+                            <circle class="event-node alert" cx="521" cy="371" r="34" />
+
+                            <circle class="event-pulse" cx="521" cy="371" r="4" />
+
+                            <text class="event-label" x="521" y="430" text-anchor="middle">
+                                INCIDENT
+                            </text>
+
+                            <text class="event-label event-small" x="521" y="445" text-anchor="middle">
+                                reconstructed chain
+                            </text>
+                        </svg>
+                    </div>
+                </article>
             </div>
+        </section>
 
-            <h3 class="project-name">
-              Incident<br />
-              Loom
-            </h3>
-
-            <p class="project-description">
-              A vendor-neutral security investigation project designed
-              to transform fragmented telemetry into an explainable
-              attack timeline, probable event chain, MITRE ATT&amp;CK
-              mappings, and confidence-aware conclusions.
-            </p>
-
-            <ul class="project-points">
-              <li>
-                Normalize heterogeneous security events into a common
-                internal model.
-              </li>
-
-              <li>
-                Correlate evidence across endpoint, identity, network,
-                cloud, and other telemetry.
-              </li>
-
-              <li>
-                Preserve the reasoning behind conclusions rather than
-                producing unexplained alerts.
-              </li>
-
-              <li>
-                Help an investigator move from many disconnected events
-                toward one coherent incident narrative.
-              </li>
-            </ul>
-
-            <div class="project-action">
-
-              <a
-                class="button"
-                href="https://github.com/jonatan-roytgarts/incident-loom"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                View the repository
-                <span class="button-arrow">↗</span>
-              </a>
-
-            </div>
-
-          </div>
-
-
-          <!-- Incident correlation artwork -->
-
-          <div
-            class="loom-visual"
-            aria-label="Abstract visualization of security events being correlated into an incident chain"
-          >
-
-            <svg
-              class="loom-map"
-              viewBox="0 0 620 500"
-              role="img"
-            >
-
-              <!-- relationships -->
-
-              <path
-                class="event-link"
-                d="M92 126 C180 126 185 205 260 205"
-              />
-
-              <path
-                class="event-link"
-                d="M92 126 C190 110 275 86 362 110"
-              />
-
-              <path
-                class="event-link probable"
-                d="M260 205 C338 205 350 263 432 263"
-              />
-
-              <path
-                class="event-link"
-                d="M362 110 C430 110 451 177 469 220"
-              />
-
-              <path
-                class="event-link"
-                d="M432 263 C475 303 468 348 521 371"
-              />
-
-              <path
-                class="event-link probable"
-                d="M260 205 C245 310 340 365 433 377"
-              />
-
-              <path
-                class="event-link"
-                d="M433 377 C467 378 491 375 521 371"
-              />
-
-
-              <!-- origin -->
-
-              <circle
-                class="event-node origin"
-                cx="92"
-                cy="126"
-                r="28"
-              />
-
-              <circle
-                class="event-pulse"
-                cx="92"
-                cy="126"
-                r="3"
-              />
-
-              <text
-                class="event-label"
-                x="92"
-                y="178"
-                text-anchor="middle"
-              >
-                INITIAL ACCESS
-              </text>
-
-              <text
-                class="event-label event-small"
-                x="92"
-                y="193"
-                text-anchor="middle"
-              >
-                confidence 0.82
-              </text>
-
-
-              <!-- event 2 -->
-
-              <circle
-                class="event-node"
-                cx="260"
-                cy="205"
-                r="25"
-              />
-
-              <circle
-                class="event-pulse"
-                cx="260"
-                cy="205"
-                r="3"
-              />
-
-              <text
-                class="event-label"
-                x="260"
-                y="251"
-                text-anchor="middle"
-              >
-                PROCESS
-              </text>
-
-              <text
-                class="event-label event-small"
-                x="260"
-                y="266"
-                text-anchor="middle"
-              >
-                endpoint telemetry
-              </text>
-
-
-              <!-- event 3 -->
-
-              <circle
-                class="event-node"
-                cx="362"
-                cy="110"
-                r="25"
-              />
-
-              <circle
-                class="event-pulse"
-                cx="362"
-                cy="110"
-                r="3"
-              />
-
-              <text
-                class="event-label"
-                x="362"
-                y="66"
-                text-anchor="middle"
-              >
-                IDENTITY
-              </text>
-
-
-              <!-- event 4 -->
-
-              <circle
-                class="event-node alert"
-                cx="432"
-                cy="263"
-                r="28"
-              />
-
-              <circle
-                class="event-pulse"
-                cx="432"
-                cy="263"
-                r="3"
-              />
-
-              <text
-                class="event-label"
-                x="432"
-                y="312"
-                text-anchor="middle"
-              >
-                CORRELATION
-              </text>
-
-
-              <!-- event 5 -->
-
-              <circle
-                class="event-node"
-                cx="433"
-                cy="377"
-                r="24"
-              />
-
-              <circle
-                class="event-pulse"
-                cx="433"
-                cy="377"
-                r="3"
-              />
-
-              <text
-                class="event-label"
-                x="433"
-                y="424"
-                text-anchor="middle"
-              >
-                NETWORK
-              </text>
-
-
-              <!-- final -->
-
-              <circle
-                class="event-node alert"
-                cx="521"
-                cy="371"
-                r="34"
-              />
-
-              <circle
-                class="event-pulse"
-                cx="521"
-                cy="371"
-                r="4"
-              />
-
-              <text
-                class="event-label"
-                x="521"
-                y="430"
-                text-anchor="middle"
-              >
-                INCIDENT
-              </text>
-
-              <text
-                class="event-label event-small"
-                x="521"
-                y="445"
-                text-anchor="middle"
-              >
-                reconstructed chain
-              </text>
-
-            </svg>
-
-          </div>
-
-        </article>
-
-      </div>
-
-    </section>
-
-
-    <!-- ========================================================
+        <!-- ========================================================
          PHILOSOPHY
          ======================================================== -->
 
-    <section class="section philosophy">
+        <section class="section philosophy">
+            <div class="container reveal">
+                <div class="section-label">How I Think</div>
 
-      <div class="container reveal">
+                <p class="quote">
+                    Security is not simply about seeing more events. It is about
+                    discovering the
+                    <em>relationships that give those events meaning.</em>
+                </p>
 
-        <div class="section-label">
-          How I Think
-        </div>
+                <p class="philosophy-copy">
+                    I want to build systems that help defenders understand complexity
+                    rather than merely observe it.
+                </p>
+            </div>
+        </section>
+    </main>
 
-        <p class="quote">
-          Security is not simply about seeing more events.
-          It is about discovering the
-          <em>relationships that give those events meaning.</em>
-        </p>
-
-        <p class="philosophy-copy">
-          I want to build systems that help defenders understand
-          complexity rather than merely observe it.
-        </p>
-
-      </div>
-
-    </section>
-
-  </main>
-
-
-  <!-- ==========================================================
+    <!-- ==========================================================
        FOOTER
        ========================================================== -->
 
-  <footer>
+    <footer>
+        <div class="container footer-inner">
+            <div class="footer-left">
+                © <span id="year"></span> Jonatan Roytgarts
+            </div>
 
-    <div class="container footer-inner">
+            <div class="footer-links">
+                <a href="https://github.com/jonatan-roytgarts" target="_blank" rel="noopener noreferrer">
+                    GitHub ↗
+                </a>
 
-      <div class="footer-left">
-        © <span id="year"></span> Jonatan Roytgarts
-      </div>
+                <a href="https://github.com/jonatan-roytgarts/incident-loom" target="_blank" rel="noopener noreferrer">
+                    Incident Loom ↗
+                </a>
+            </div>
+        </div>
+    </footer>
 
-      <div class="footer-links">
-
-        <a
-          href="https://github.com/jonatan-roytgarts"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          GitHub ↗
-        </a>
-
-        <a
-          href="https://github.com/jonatan-roytgarts/incident-loom"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Incident Loom ↗
-        </a>
-
-      </div>
-
-    </div>
-
-  </footer>
-
-
-  <!-- ==========================================================
+    <!-- ==========================================================
        MINIMAL JAVASCRIPT
        ========================================================== -->
 
-  <script>
+    <script>
+        /*
+         * Current year
+         */
+        document.getElementById("year").textContent = new Date().getFullYear();
 
-    /*
-     * Current year
-     */
-    document.getElementById("year").textContent =
-      new Date().getFullYear();
+        /*
+         * Scroll reveal.
+         *
+         * IntersectionObserver is native browser functionality,
+         * so we do not need an animation library.
+         */
+        const revealElements = document.querySelectorAll(".reveal");
 
-
-    /*
-     * Scroll reveal.
-     *
-     * IntersectionObserver is native browser functionality,
-     * so we do not need an animation library.
-     */
-    const revealElements =
-      document.querySelectorAll(".reveal");
-
-    const observer =
-      new IntersectionObserver(
-        entries => {
-
-          entries.forEach(entry => {
-
-            if (entry.isIntersecting) {
-              entry.target.classList.add("visible");
-              observer.unobserve(entry.target);
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("visible");
+                        observer.unobserve(entry.target);
+                    }
+                });
+            },
+            {
+                threshold: 0.12
             }
-
-          });
-
-        },
-        {
-          threshold: 0.12
-        }
-      );
-
-    revealElements.forEach(element => {
-      observer.observe(element);
-    });
-
-  </script>
-
+        );
+        revealElements.forEach((element) => {
+            observer.observe(element);
+        });
+    </script>
 </body>
+
 </html>
